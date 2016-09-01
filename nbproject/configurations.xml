@@ -7,6 +7,8 @@
       <itemPath>system.h</itemPath>
       <itemPath>user.h</itemPath>
       <itemPath>uart1.h</itemPath>
+      <itemPath>1wire.h</itemPath>
+      <itemPath>SMS.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -22,6 +24,8 @@
       <itemPath>traps.c</itemPath>
       <itemPath>user.c</itemPath>
       <itemPath>uart1.c</itemPath>
+      <itemPath>1wire.c</itemPath>
+      <itemPath>SMS.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

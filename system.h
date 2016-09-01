@@ -2,10 +2,18 @@
 /* System Level #define Macros                                                */
 /******************************************************************************/
 
-/* TODO Define system operating frequency */
+#include <libpic30.h>        // includes delay_us and delay_ms
+
+/* ****** G E N E R I C   D E F I N I T I O N S ************************************************/
+
+#define	HIGH	1
+#define	LOW		0
+#define	OUTPUT	0
+#define	INPUT 	1
+#define	SET		1
+#define	CLEAR	0
 
 /* Microcontroller MIPs (FCY) */
-
 #define SYS_FREQ        32000000UL
 
 /******************************************************************************/

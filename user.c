@@ -33,7 +33,7 @@ void InitApp(void)
     /* Setup analog functionality and port direction */
     // Initialize the LED
     LED_TRIS = 0;
-
+    
     /* Initialize Timer 1
      * Each configuration sets the MCU's oscillator to 32MHz (see the respective
      * "system.c" for configuration bits).  For the LED to blink
