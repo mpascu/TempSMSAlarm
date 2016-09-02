@@ -9,6 +9,7 @@
       <itemPath>uart1.h</itemPath>
       <itemPath>1wire.h</itemPath>
       <itemPath>SMS.h</itemPath>
+      <itemPath>sensor.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -26,6 +27,7 @@
       <itemPath>uart1.c</itemPath>
       <itemPath>1wire.c</itemPath>
       <itemPath>SMS.c</itemPath>
+      <itemPath>sensor.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
