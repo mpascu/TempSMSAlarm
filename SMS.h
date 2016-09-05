@@ -1,3 +1,6 @@
+#ifndef _SMS_H
+#define _SMS_H
+
 /* Microchip Technology Inc. and its subsidiaries.  You may use this software 
  * and any derivatives exclusively with Microchip products. 
  * 
@@ -27,12 +30,27 @@
  */
 
 #include <xc.h> // include processor files - each processor file is guarded.  
+#include "sensor.h"
 
 
-/**
- * 
- * 
- */
-void sendSMS(int temp, int tens);
+
+/*******************************************************************************
+ * Function: void initSMS() 
+ * PreCondition: none
+ * Overview: This function initializes the GSM module with the parameters 
+ *           needed to send SMS
+ ******************************************************************************/
+void initSMS();
+
+/*******************************************************************************
+ * Function: void sendInfoSMS(tempLogic temp1, tempLogic temp2, 
+ *              tempLogic temp3, tempLogic temp4, tempLogic temp5 ) 
+ * PreCondition:    SMS code must be initialized with SMSinit()
+ * @param temp1 - temp5 temperatures of the different sensors to be sent
+ * Overview: This function sends and SMS indicating the temperature of each sensor
+ ******************************************************************************/
+void sendInfoSMS(tempLogic temp1, tempLogic temp2, tempLogic temp3,
+        tempLogic temp4, tempLogic temp5 );
 
 
+#endif

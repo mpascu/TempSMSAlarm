@@ -1,9 +1,11 @@
+#ifndef _SYSTEM_H
+#define _SYSTEM_H
 /******************************************************************************/
 /* System Level #define Macros                                                */
 /******************************************************************************/
 
 #include <libpic30.h>        // includes delay_us and delay_ms
-
+#include <stdint.h>
 /* ****** G E N E R I C   D E F I N I T I O N S ************************************************/
 
 #define	HIGH	1
@@ -26,3 +28,4 @@ go here. */
 
 void ConfigureOscillator(void); /* Handles clock switching/osc initialization */
 
+#endif

@@ -2,7 +2,7 @@
 /* Files to Include                                                           */
 /******************************************************************************/
 //#define FCY 16000000UL
-#define FCY             SYS_FREQ/2
+
 
 /* Device header file */
 #if defined(__XC16__)
@@ -33,22 +33,16 @@
 /* Global Variable Declaration                                                */
 /******************************************************************************/
 
-unsigned char temp_lsb, temp_msb; //, temp;
 unsigned char serial_number[8];
 unsigned char DEVICE_PRESENT;
 int BAUD = 9600;
 uint16_t contador = 0;
 
-/*typedef union temperature
-{
-    int16_t temperatura;
-    tempLogic temp;
-} ;*/
-
 tempLogic temp1;
 tempLogic temp2;
 tempLogic temp3;
 tempLogic temp4;
+tempLogic temp5;
 /******************************************************************************/
 /* Main Program                                                               */
 
@@ -63,8 +57,10 @@ int16_t main(void) {
 
     /* Initialize UART */
     UART1Init(BAUD); //BRGx = Fcy / (16*BAUDR) -1 = 21,5E6/16*9600 -1
-
-    DEVICE_PRESENT = Detect_Slave_Device();
+    
+    /* Initialize GSM module */
+    initSMS();
+    //DEVICE_PRESENT = Detect_Slave_Device();
  
     //Main Program Loop, Loop forever    
     while (1) {
@@ -72,11 +68,16 @@ int16_t main(void) {
         };
         LED ^= 1;
         TMR1 = 0x0000;
-        temp1 = getTemperature(1);
-        if (contador == 5) {
-            sendSMS(temp1.intPart, temp1.decPart);
-        }
         
+        temp1 = getTemperature(1);
+        temp2 = getTemperature(2);
+        temp3 = getTemperature(3);
+        temp4 = getTemperature(4);
+        temp5 = getTemperature(5);
+        
+        if (contador == 5) {
+            sendInfoSMS(temp1, temp2, temp3, temp4, temp5 );
+        }
         contador++;
     }
     return 0;

@@ -1,3 +1,6 @@
+#ifndef _SENSOR_H
+#define _SENSOR_H
+
 /* Microchip Technology Inc. and its subsidiaries.  You may use this software 
  * and any derivatives exclusively with Microchip products. 
  * 
@@ -25,6 +28,10 @@
  * Comments: Sensor related methods (get serial number, temperature...) go here
  * Revision history: 
  */
+#include <xc.h> // include processor files - each processor file is guarded. 
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 
 /**
  * Sensor commands definition
@@ -37,9 +44,7 @@
 typedef struct tempLogic {
     int8_t intPart;
     int8_t decPart;
-};
-
-#include <xc.h> // include processor files - each processor file is guarded.  
+}tempLogic;
 
 /**Function: bool Detect_Slave_Device(int8_t sId)
  * PreCondition:    None
@@ -64,3 +69,4 @@ void readSerialNumber(char *serial_number, int8_t sId);
  */
 tempLogic getTemperature(int8_t sId);
 
+#endif

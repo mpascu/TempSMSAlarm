@@ -21,8 +21,8 @@
 #include <stdint.h>          /* For uint32_t definition */
 #include <stdbool.h>         /* For true/false definition */
 #include "system.h"          /* variables/params used by system.c */
-#include <libpic30.h>        /* includes delay_us and delay_ms
-/*                                                                            */
+#include <libpic30.h>        /* includes delay_us and delay_ms */
+
 /* System Level Functions                                                     */
 /*                                                                            */
 /* Custom oscillator configuration funtions, reset source evaluation          */
