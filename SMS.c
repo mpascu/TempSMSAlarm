@@ -4,21 +4,24 @@
  *
  * Created on 1 de septiembre de 2016, 11:55
  */
+#define FCY SYS_FREQ/2
 
-
+#include "system.h"
 #include "xc.h"
 #include "SMS.h"
 #include "uart1.h"
 #include <stdio.h>      //sprintf
+#include <libpic30.h>
+
 
 /* SMS parameters declaration*/
-char AT[] = "AT\n"; // To initialize mode
-char noecho[] = "ATE0\n"; // To stop echo
-char mode_text[] = "AT+CMGF=1\n"; // to set text mode
-char char_mode[] = "AT+CSCS=\"GSM\"\n"; // to set character mode
-char param[] = "AT+CSMP=17,167,0,0\n"; // set the parameter of character
-char mobile_no[] = "AT+CMGS=\"+34666352492\"\n"; //use to set receinpent number and mesg
-char ALRmesg[] = "Temperatura de la nevera 1 fora de rang [4-8]C : "; // mesg we want to send
+char AT[] = "AT\r"; // To initialize mode
+char noecho[] = "ATE0\r"; // To stop echo
+char mode_text[] = "AT+CMGF=1\r"; // to set text mode
+char char_mode[] = "AT+CSCS=\"GSM\"\r"; // to set character mode
+char param[] = "AT+CSMP=17,167,0,0\r"; // set the parameter of character
+char mobile_no[] = "AT+CMGS=\"+34666352492\"\r"; //use to set receinpent number and mesg
+char ALRmesg[] = "Temperatura de la nevera %i fora de rang [4-8]C : %i,%i C \r"; // mesg we want to send
 char INFOmesg[] = "Sensor "; // mesg we want to send
 char terminator = 0x1A; // chartacter form of control + z terminator character
 
@@ -45,9 +48,10 @@ void initSMS(){
  ******************************************************************************/
 void sendInfoSMS(tempLogic temp1, tempLogic temp2, tempLogic temp3, tempLogic temp4, tempLogic temp5 ) {
     vPutStrU1(mobile_no);
-    
+    __delay_ms(100);
     /* SENSOR 1*/
     vPutStrU1(INFOmesg);
+    __delay_ms(100);
     vPutStrU1("1: ");
     char t1[2];
     sprintf(t1, "%i", temp1.intPart);
@@ -57,9 +61,11 @@ void sendInfoSMS(tempLogic temp1, tempLogic temp2, tempLogic temp3, tempLogic te
     sprintf(t11, "%i", temp1.decPart);
     vPutStrU1(t11);
     vPutStrU1("C \n");
+    __delay_ms(100);
     
     /* SENSOR 2*/
     vPutStrU1(INFOmesg);
+    __delay_ms(100);
     vPutStrU1("2: ");
     char t2[2];
     sprintf(t2, "%i", temp2.intPart);
@@ -69,9 +75,11 @@ void sendInfoSMS(tempLogic temp1, tempLogic temp2, tempLogic temp3, tempLogic te
     sprintf(t22, "%i", temp2.decPart);
     vPutStrU1(t22);
     vPutStrU1("C \n");
+    __delay_ms(100);
     
     /* SENSOR 3*/
     vPutStrU1(INFOmesg);
+    __delay_ms(100);
     vPutStrU1("3: ");
     char t3[2];
     sprintf(t3, "%i", temp3.intPart);
@@ -81,9 +89,11 @@ void sendInfoSMS(tempLogic temp1, tempLogic temp2, tempLogic temp3, tempLogic te
     sprintf(t33, "%i", temp3.decPart);
     vPutStrU1(t33);
     vPutStrU1("C \n");
+    __delay_ms(100);
     
     /* SENSOR 4*/
     vPutStrU1(INFOmesg);
+    __delay_ms(100);
     vPutStrU1("4: ");
     char t4[2];
     sprintf(t4, "%i", temp4.intPart);
@@ -93,9 +103,11 @@ void sendInfoSMS(tempLogic temp1, tempLogic temp2, tempLogic temp3, tempLogic te
     sprintf(t44, "%i", temp4.decPart);
     vPutStrU1(t44);
     vPutStrU1("C \n");
+    __delay_ms(100);
     
     /* SENSOR 5*/
     vPutStrU1(INFOmesg);
+    __delay_ms(100);
     vPutStrU1("5: ");
     char t5[2];
     sprintf(t5, "%i", temp5.intPart);
@@ -105,6 +117,26 @@ void sendInfoSMS(tempLogic temp1, tempLogic temp2, tempLogic temp3, tempLogic te
     sprintf(t55, "%i", temp5.decPart);
     vPutStrU1(t55);
     vPutStrU1("C \n");
+    __delay_ms(100);
     
     vPutCharU1(terminator);
+}
+
+/*******************************************************************************
+ * Function: void sendErrorSMS(tempLogic sensor, int id)
+ * PreCondition:    SMS code must be initialized with SMSinit()
+ * @param sensor    sensor which temperature is wrong
+ * @param id        if of the out of limits sensor
+ * Overview: This function sends and SMS indicating that some temperature is 
+ * out of the limit
+ ******************************************************************************/
+void sendErrorSMS(tempLogic sensor, int id) {
+    vPutStrU1(mobile_no);
+    __delay_ms(100);
+    char mesg [80];
+    sprintf(mesg , "Temperatura de la nevera %i fora de rang [4-8]C : %i,%i C ", id+1 , sensor.intPart,sensor.decPart);
+    vPutStrU1(mesg);
+    __delay_ms(100);
+    vPutCharU1(terminator);
+    __delay_ms(10000);
 }

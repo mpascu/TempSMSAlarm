@@ -5,4 +5,5 @@ system.h  \
 user.h  \
  1wire.h  \
 SMS.h  \
-sensor.h 
+sensor.h  \
+alarms.h 

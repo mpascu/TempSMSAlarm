@@ -1,9 +1,6 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
-//#define FCY 16000000UL
-
-
 /* Device header file */
 #if defined(__XC16__)
 #include <xc.h>
@@ -17,6 +14,8 @@
 #endif
 #endif
 
+#define FCY SYS_FREQ/2
+
 #include <stdint.h>        /* Includes uint16_t definition                    */
 #include <string.h>
 #include <stdio.h>
@@ -28,7 +27,13 @@
 #include "1wire.h"
 #include "SMS.h"
 #include "sensor.h"
+#include "alarms.h"
+#include <libpic30.h>
 
+
+
+void readSensors();
+void initSensors();
 /******************************************************************************/
 /* Global Variable Declaration                                                */
 /******************************************************************************/
@@ -38,11 +43,12 @@ unsigned char DEVICE_PRESENT;
 int BAUD = 9600;
 uint16_t contador = 0;
 
-tempLogic temp1;
+/*tempLogic temp1;
 tempLogic temp2;
 tempLogic temp3;
 tempLogic temp4;
-tempLogic temp5;
+tempLogic temp5;*/
+tempLogic sensors[5];
 /******************************************************************************/
 /* Main Program                                                               */
 
@@ -57,28 +63,51 @@ int16_t main(void) {
 
     /* Initialize UART */
     UART1Init(BAUD); //BRGx = Fcy / (16*BAUDR) -1 = 21,5E6/16*9600 -1
-    
+
     /* Initialize GSM module */
     initSMS();
-    //DEVICE_PRESENT = Detect_Slave_Device();
- 
+
+    /* Initialize sensors*/
+    initSensors();
+
+
     //Main Program Loop, Loop forever    
     while (1) {
-        while (TMR1 < 0xF424) {
+        if (TMR1 > 0xF424) {
+            LED ^= 1;
+            TMR1 = 0x0000;
         };
-        LED ^= 1;
-        TMR1 = 0x0000;
         
-        temp1 = getTemperature(1);
-        temp2 = getTemperature(2);
-        temp3 = getTemperature(3);
-        temp4 = getTemperature(4);
-        temp5 = getTemperature(5);
-        
-        if (contador == 5) {
-            sendInfoSMS(temp1, temp2, temp3, temp4, temp5 );
+        readSensors();
+
+        if (RUN_READ_PIN == 1) {
+            checkTemperatures(sensors);
         }
+        __delay_ms(200);
         contador++;
     }
     return 0;
+}
+
+void readSensors() {
+    int loop;
+    for (loop = 0; loop < 5; loop++) {
+        sensors[loop] = getTemperature(loop + 1);
+    }
+}
+
+void initSensors() {
+    int loop;
+    for (loop = 0; loop < 5; loop++) {
+        sensors[loop].alarmActive = 0;
+    }
+}
+
+//_INT1Interrupt() is the INT1 interrupt service routine (ISR).
+void __attribute__((__interrupt__)) _INT1Interrupt(void);
+
+void __attribute__((__interrupt__, auto_psv)) _INT1Interrupt(void) {
+    sendInfoSMS(sensors[0], sensors[1], sensors[2], sensors[3], sensors[4]);
+    IFS1bits.INT1IF = 0; //Clear the INT1 interrupt flag or else
+    //the CPU will keep vectoring back to the ISR 
 }

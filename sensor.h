@@ -44,6 +44,7 @@
 typedef struct tempLogic {
     int8_t intPart;
     int8_t decPart;
+    bool alarmActive;
 }tempLogic;
 
 /**Function: bool Detect_Slave_Device(int8_t sId)
@@ -68,5 +69,12 @@ void readSerialNumber(char *serial_number, int8_t sId);
  * and then reads it from the scratchpad
  */
 tempLogic getTemperature(int8_t sId);
+
+/**Function: float temp2float(tempLogic tmp);
+ * PreCondition:    None
+ * @param tmp   temperature to be converted
+ * Overview: This function converts temperature from tempLogic to float 
+ */
+float temp2float(tempLogic tmp);
 
 #endif

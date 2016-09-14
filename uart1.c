@@ -140,7 +140,7 @@ char cGetCharU1(void) {
  *****************************************************************************/
 void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(void) {
 
-    rcv[count] = U1RXREG;
+    //rcv[count] = U1RXREG;
     count++;
     //custom code  
     while (!U1STAbits.TRMT); // Echo Back Received Character

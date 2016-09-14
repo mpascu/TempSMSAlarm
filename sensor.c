@@ -5,7 +5,7 @@
  * Created on 2 de septiembre de 2016, 10:13
  */
 
-#define FCY             SYS_FREQ/2
+#define FCY SYS_FREQ/2
 
 #include "sensor.h"
 #include <stdint.h>
@@ -81,4 +81,20 @@ tempLogic getTemperature(int8_t sId) {
         tempReal.decPart += 6;
     
     return tempReal;
+}
+
+/**Function:        float temp2float(tempLogic tmp);
+ * PreCondition:    None
+ * @param tmp       temperature to be converted
+ * Overview:        This function converts temperature from tempLogic to float 
+ */
+float temp2float(tempLogic tmp){
+    int a,b;
+    a = tmp.intPart;
+    b = tmp.decPart;
+    float c;
+    c = (float)b;
+    while( c > 1.0f ) c *= 0.1f; //moving the decimal point (.) to left most
+    c = (float)a + c;
+    return c; 
 }

@@ -52,5 +52,14 @@ void initSMS();
 void sendInfoSMS(tempLogic temp1, tempLogic temp2, tempLogic temp3,
         tempLogic temp4, tempLogic temp5 );
 
+/*******************************************************************************
+ * Function: void sendErrorSMS(tempLogic sensor, int id)
+ * PreCondition:    SMS code must be initialized with SMSinit()
+ * @param sensor    sensor which temperature is wrong
+ * @param id        if of the out of limits sensor
+ * Overview: This function sends and SMS indicating that some temperature is 
+ * out of the limit
+ ******************************************************************************/
+void sendErrorSMS(tempLogic sensor, int id);
 
 #endif
