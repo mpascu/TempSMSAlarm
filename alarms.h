@@ -33,39 +33,26 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 #include "sensor.h"
-// TODO Insert appropriate #include <>
 
-// TODO Insert C++ class definitions if appropriate
+/*******************************************************************************
+ * Function: void checkTemperatures (tempLogic* sensors ) 
+ * PreCondition:    SMS code must be initialized with SMSinit()
+ *                  At least one reading of the sensors must be done
+ * @param tempLogic* sensors array of all sensors
+ * @param numSensors number of active temperature sensors
+ * Overview: This function sends and SMS if there is a temperature out of the
+ *           defined limits
+ ******************************************************************************/
+void checkTemperatures (tempLogic* sensors, int numSensors );
 
-// TODO Insert declarations
-
-// Comment a function and leverage automatic documentation with slash star star
-/**
-    <p><b>Function prototype:</b></p>
-  
-    <p><b>Summary:</b></p>
-
-    <p><b>Description:</b></p>
-
-    <p><b>Precondition:</b></p>
-
-    <p><b>Parameters:</b></p>
-
-    <p><b>Returns:</b></p>
-
-    <p><b>Example:</b></p>
-    <code>
- 
-    </code>
-
-    <p><b>Remarks:</b></p>
- */
-// TODO Insert declarations or function prototypes (right here) to leverage 
-// live documentation
-
-
-
-void checkTemperatures (tempLogic *sensors );
+/*******************************************************************************
+ * Function: bool isAlarmActive(tempLogic* sensors, int numSensors)
+ * PreCondition: checkTemperatures() should be executed before to activate alarm bits     
+ * @param tempLogic* sensor array of all sensors
+ * @param numSensors number of active temperature sensors
+ * Overview: returns true if an alarm is active, false otherwise
+ ******************************************************************************/
+bool isAlarmActive(tempLogic* sensors, int numSensors);
 
 #endif	/* XC_HEADER_TEMPLATE_H */
 

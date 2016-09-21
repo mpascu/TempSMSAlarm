@@ -28,11 +28,18 @@
 
 void InitApp(void) {
     /* Setup analog functionality and port direction */
-    // Initialize the LED
-    LED_TRIS = 0;
+    
+    //Set up I/O Port
+    AD1PCFGL = 0xFFFF; //set to all digital I/O
+    
+    
+    // Initialize the LEDs
+    LEDRUN_TRIS = 0;
+    LEDALR_TRIS = 0;
+    
+    // Initialize the buttons
     TEST_BUTTON = INPUT;
     RUN_BUTTON = INPUT;
-
 
     //Set up External Interrupt
     RPINR0 = 0x0E00; //set RP14 to external interrupt 1
@@ -53,16 +60,14 @@ void InitApp(void) {
      * T1CONbits.TCKPS = 3 divides the input clock by 256.
      * PR1 = Fcy[Hz] / 256 / 2[Hz] = 0x7A12;
      */
-    _T1IF = 0;
-    _T1IE = 0;
-    TMR1 = 0x0000;
     PR1 = 0xF424;
     T1CONbits.TCKPS = 3;
+    T1CONbits.TCS = 0;
+    IPC0bits.T1IP = 5;	 //set interrupt priority
+    //T1CON = 0b1000000000000000;	//turn on the timer
     T1CONbits.TON = 1;
-
-    //Set up I/O Port
-    AD1PCFGL = 0xFFFF; //set to all digital I/O
-    //TRISB	 =	0xF3FF;	 //configure all PortB as input
-    /* Initialize peripherals */
+    IFS0bits.T1IF = 0;
+    IEC0bits.T1IE = 1;
+    
 }
 

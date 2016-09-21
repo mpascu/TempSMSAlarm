@@ -40,14 +40,15 @@ void readSerialNumber(char *serial_number, int8_t sId){
         serial_number[loop] = OW_read_byte(sId); // Read 64-bit registration (48-bit serial number) number from 1-wire Slave Device
 }
 
-/**Function: tempLogic getTemperature(int8_t sId)
+/**Function: tempLogic getTemperature(int8_t sId, tempLogic* sensor)
  * PreCondition:    None
  * @param sId   identifier of the sensor
+ * @param sensor sensor struct where the temperature will ve stored
  * Overview: This function tells the specified sensor to read the temperature 
  * and then reads it from the scratchpad
  */
-tempLogic getTemperature(int8_t sId) {
-    tempLogic tempReal;
+void getTemperature(int8_t sId, tempLogic* sensor) {
+    //struct tempLogic tempReal;
     OW_reset_pulse(sId);
 
     OW_write_byte(sId, Skip_ROM); //Skip rom command because there is only one slave per bus
@@ -69,18 +70,17 @@ tempLogic getTemperature(int8_t sId) {
     unsigned char temp_lsb = OW_read_byte(sId);
     unsigned char temp_msb = OW_read_byte(sId);
 
-    tempReal.intPart = (temp_msb * 16)+(temp_lsb >> 4); //get the integer part of the temperature
-    tempReal.decPart = 0;                               //get the decimal part 
+    sensor->intPart = (temp_msb * 16)+(temp_lsb >> 4); //get the integer part of the temperature
+    sensor->decPart = 0;                               //get the decimal part 
     if (temp_lsb & 0x08)
-        tempReal.decPart = 50;
+        sensor->decPart = 50;
     if (temp_lsb & 0x04)
-        tempReal.decPart += 25;
+        sensor->decPart += 25;
     if (temp_lsb & 0x02)
-        tempReal.decPart += 12;
+        sensor->decPart += 12;
     if (temp_lsb & 0x01)
-        tempReal.decPart += 6;
+        sensor->decPart += 6;
     
-    return tempReal;
 }
 
 /**Function:        float temp2float(tempLogic tmp);

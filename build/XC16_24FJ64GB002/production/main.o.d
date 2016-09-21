@@ -1,4 +1,4 @@
-build/XC16_24HJ128GP202/debug/main.o:  \
+build/XC16_24FJ64GB002/production/main.o:  \
 main.c  \
 uart1.h  \
 system.h  \

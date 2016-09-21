@@ -15,6 +15,7 @@
 #endif
 
 #define FCY SYS_FREQ/2
+#define NUM_SENSORS 5
 
 #include <stdint.h>        /* Includes uint16_t definition                    */
 #include <string.h>
@@ -43,26 +44,23 @@ unsigned char DEVICE_PRESENT;
 int BAUD = 9600;
 uint16_t contador = 0;
 
-/*tempLogic temp1;
-tempLogic temp2;
-tempLogic temp3;
-tempLogic temp4;
-tempLogic temp5;*/
-tempLogic sensors[5];
+tempLogic sensors[NUM_SENSORS];
+
 /******************************************************************************/
 /* Main Program                                                               */
-
 /******************************************************************************/
-
 int16_t main(void) {
     /* Configure the oscillator for the device */
     ConfigureOscillator();
+    __delay_ms(100);
 
     /* Initialize IO ports and peripherals */
     InitApp();
-
+    __delay_ms(1000);
+    //LED =1;
     /* Initialize UART */
-    UART1Init(BAUD); //BRGx = Fcy / (16*BAUDR) -1 = 21,5E6/16*9600 -1
+    UART1Init(BAUD);
+    __delay_ms(5000);
 
     /* Initialize GSM module */
     initSMS();
@@ -70,18 +68,14 @@ int16_t main(void) {
     /* Initialize sensors*/
     initSensors();
 
-
     //Main Program Loop, Loop forever    
     while (1) {
-        if (TMR1 > 0xF424) {
-            LED ^= 1;
-            TMR1 = 0x0000;
-        };
-        
+
         readSensors();
 
         if (RUN_READ_PIN == 1) {
-            checkTemperatures(sensors);
+            checkTemperatures(&sensors[0],NUM_SENSORS);
+            LEDALR = isAlarmActive(&sensors[0],NUM_SENSORS);
         }
         __delay_ms(200);
         contador++;
@@ -91,14 +85,14 @@ int16_t main(void) {
 
 void readSensors() {
     int loop;
-    for (loop = 0; loop < 5; loop++) {
-        sensors[loop] = getTemperature(loop + 1);
+    for (loop = 0; loop < NUM_SENSORS; loop++) {
+        getTemperature(loop+1, &sensors[loop]);
     }
 }
 
 void initSensors() {
     int loop;
-    for (loop = 0; loop < 5; loop++) {
+    for (loop = 0; loop < NUM_SENSORS; loop++) {
         sensors[loop].alarmActive = 0;
     }
 }
@@ -110,4 +104,17 @@ void __attribute__((__interrupt__, auto_psv)) _INT1Interrupt(void) {
     sendInfoSMS(sensors[0], sensors[1], sensors[2], sensors[3], sensors[4]);
     IFS1bits.INT1IF = 0; //Clear the INT1 interrupt flag or else
     //the CPU will keep vectoring back to the ISR 
+}
+
+//_T1Interrupt() is the T1 interrupt service routine (ISR).
+void __attribute__((__interrupt__)) _T1Interrupt(void);
+
+void __attribute__((__interrupt__, auto_psv)) _T1Interrupt(void) {
+    if (RUN_READ_PIN == 1) {
+        LEDRUN = !LEDRUN;
+    }
+    else{
+        LEDRUN = 0;
+    }
+    IFS0bits.T1IF = 0;
 }

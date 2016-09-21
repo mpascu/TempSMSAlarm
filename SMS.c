@@ -20,7 +20,8 @@ char noecho[] = "ATE0\r"; // To stop echo
 char mode_text[] = "AT+CMGF=1\r"; // to set text mode
 char char_mode[] = "AT+CSCS=\"GSM\"\r"; // to set character mode
 char param[] = "AT+CSMP=17,167,0,0\r"; // set the parameter of character
-char mobile_no[] = "AT+CMGS=\"+34666352492\"\r"; //use to set receinpent number and mesg
+char mobile_no[] = "AT+CMGS=\"+34xxxxxxxxx\"\r"; //use to set receinpent number and mesg
+char mobile_no1[] = "AT+CMGS=\"+34625xxxxxx\"\r"; //use to set receinpent number and mesg
 char ALRmesg[] = "Temperatura de la nevera %i fora de rang [4-8]C : %i,%i C \r"; // mesg we want to send
 char INFOmesg[] = "Sensor "; // mesg we want to send
 char terminator = 0x1A; // chartacter form of control + z terminator character
@@ -47,79 +48,37 @@ void initSMS(){
  * Overview: This function sends and SMS indicating the temperature of each sensor
  ******************************************************************************/
 void sendInfoSMS(tempLogic temp1, tempLogic temp2, tempLogic temp3, tempLogic temp4, tempLogic temp5 ) {
+    char aux[20];
     vPutStrU1(mobile_no);
-    __delay_ms(100);
+    __delay_ms(50);
+    
     /* SENSOR 1*/
-    vPutStrU1(INFOmesg);
-    __delay_ms(100);
-    vPutStrU1("1: ");
-    char t1[2];
-    sprintf(t1, "%i", temp1.intPart);
-    vPutStrU1(t1);
-    vPutStrU1(",");
-    char t11[2];
-    sprintf(t11, "%i", temp1.decPart);
-    vPutStrU1(t11);
-    vPutStrU1("C \n");
-    __delay_ms(100);
+    sprintf(aux, "Sensor 1: %i,%i C \n", temp1.intPart, temp1.decPart);
+    vPutStrU1(aux);
+    __delay_ms(50);
     
     /* SENSOR 2*/
-    vPutStrU1(INFOmesg);
-    __delay_ms(100);
-    vPutStrU1("2: ");
-    char t2[2];
-    sprintf(t2, "%i", temp2.intPart);
-    vPutStrU1(t2);
-    vPutStrU1(",");
-    char t22[2];
-    sprintf(t22, "%i", temp2.decPart);
-    vPutStrU1(t22);
-    vPutStrU1("C \n");
-    __delay_ms(100);
+    sprintf(aux, "Sensor 2: %i,%i C \n", temp2.intPart, temp2.decPart);
+    vPutStrU1(aux);
+    __delay_ms(50);
     
     /* SENSOR 3*/
-    vPutStrU1(INFOmesg);
-    __delay_ms(100);
-    vPutStrU1("3: ");
-    char t3[2];
-    sprintf(t3, "%i", temp3.intPart);
-    vPutStrU1(t3);
-    vPutStrU1(",");
-    char t33[2];
-    sprintf(t33, "%i", temp3.decPart);
-    vPutStrU1(t33);
-    vPutStrU1("C \n");
-    __delay_ms(100);
+    sprintf(aux, "Sensor 3: %i,%i C \n", temp3.intPart, temp3.decPart);
+    vPutStrU1(aux);
+    __delay_ms(50);
     
     /* SENSOR 4*/
-    vPutStrU1(INFOmesg);
-    __delay_ms(100);
-    vPutStrU1("4: ");
-    char t4[2];
-    sprintf(t4, "%i", temp4.intPart);
-    vPutStrU1(t4);
-    vPutStrU1(",");
-    char t44[2];
-    sprintf(t44, "%i", temp4.decPart);
-    vPutStrU1(t44);
-    vPutStrU1("C \n");
-    __delay_ms(100);
+    sprintf(aux, "Sensor 4: %i,%i C \n", temp4.intPart, temp4.decPart);
+    vPutStrU1(aux);
+    __delay_ms(50);
     
     /* SENSOR 5*/
-    vPutStrU1(INFOmesg);
-    __delay_ms(100);
-    vPutStrU1("5: ");
-    char t5[2];
-    sprintf(t5, "%i", temp5.intPart);
-    vPutStrU1(t5);
-    vPutStrU1(",");
-    char t55[2];
-    sprintf(t55, "%i", temp5.decPart);
-    vPutStrU1(t55);
-    vPutStrU1("C \n");
-    __delay_ms(100);
+    sprintf(aux, "Sensor 5: %i,%i C \n", temp5.intPart, temp5.decPart);
+    vPutStrU1(aux);
+    __delay_ms(50);
     
-    vPutCharU1(terminator);
+    vPutCharU1(terminator);  
+    
 }
 
 /*******************************************************************************

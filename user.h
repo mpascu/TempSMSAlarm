@@ -39,9 +39,11 @@
 /*
  *LEDS
  */
-#define LED  	 _LATA0
-#define LED_TRIS _TRISA0
+#define LEDRUN  	 _LATA0
+#define LEDRUN_TRIS _TRISA0
 
+#define LEDALR  	 _LATA1
+#define LEDALR_TRIS _TRISA1
 
 /******************************************************************************/
 /* User Function Prototypes                                                   */

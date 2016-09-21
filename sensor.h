@@ -62,13 +62,14 @@ bool Detect_Slave_Device(int8_t sId);
  */
 void readSerialNumber(char *serial_number, int8_t sId);
 
-/**Function: tempLogic getTemperature(int8_t sId)
+/**Function: tempLogic getTemperature(int8_t sId, tempLogic* sensor)
  * PreCondition:    None
  * @param sId   identifier of the sensor
+ * @param sensor sensor struct where the temperature will ve stored
  * Overview: This function tells the specified sensor to read the temperature 
  * and then reads it from the scratchpad
  */
-tempLogic getTemperature(int8_t sId);
+void getTemperature(int8_t sId, tempLogic* sensor);
 
 /**Function: float temp2float(tempLogic tmp);
  * PreCondition:    None
